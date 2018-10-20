@@ -1,13 +1,13 @@
 # from src.logexception.exceptionhandler import CustomUserException
 # Error & Exception handling
 import os
+import sys
 import logging
 import logframework
 from CustomException import CustomException
 
 logger = logging.getLogger('parsecsv')
 def parse_csv_and_get_columns(filename):
-    print("here2")
     logger.info("Enter in Execution")
     if os.path.isfile(filename):
         csvFile = open(filename, 'r')
@@ -17,14 +17,21 @@ def parse_csv_and_get_columns(filename):
     for line in lines[1:]:
         val = line.split(",")
         try:
-            test_str_div = val[0] / val[11]
             test_zero_div =  (int(val[0]) / int(val[11]))
+            print(test_zero_div)
         except TypeError:
+            logger.info("Exception Occured TypeError")
             raise CustomException('Invalid Types')
+        except ZeroDivisionError:
+            logger.info("Exception Occured ZeroDivisionError")
+        except ValueError:
+            logger.info("Exception Occured ValueError")    
+
                 
 
 
 if __name__ == "__main__":
 
     logframework.setup_logging()
-    parse_csv_and_get_columns(filename="../../data/flights.csv")
+    logger.info("input File: "+sys.argv[1])
+    parse_csv_and_get_columns(filename=sys.argv[1])
